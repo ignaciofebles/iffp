@@ -1,0 +1,30 @@
+{% extends "iffpApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Detalles del Movimiento</h1>
+
+    <div class="row">
+        <!-- Columna de detalles -->
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="card p-4">
+                <p><strong>Fecha:</strong> {{ move.date }}</p>
+                <p><strong>Comentario:</strong> {{ move.comentary }}</p>
+                <p><strong>Monto:</strong> {{ move.amount }}</p>
+                <p><strong>Banco:</strong> {{ move.bank }}</p>
+                <p><strong>Concepto:</strong> {{ move.concept }}</p>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <a class="btn btn-secondary" href="{% url 'Home' %}">Home</a>
+                    <a class="btn btn-secondary" href="{% url 'Move' move.id %}">Editar</a>  
+                    <a class="btn btn-success" href="{% url 'Move' %}">Nueva</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
