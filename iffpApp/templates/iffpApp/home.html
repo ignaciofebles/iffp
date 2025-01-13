@@ -4,19 +4,27 @@
 
 {% block content %}
 
-<ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'Move' %}">Nueva transacción</a>        
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'Bank' %}">Bancos</a>        
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'Concept' %}">Conceptos</a>        
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'Thing' %}">Cosas</a>
-  </li>
-</ul>
+{% if request.user.is_authenticated %}   
+
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'Move' %}">Nueva transacción</a>        
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'Bank' %}">Bancos</a>        
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'Concept' %}">Conceptos</a>        
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'Thing' %}">Cosas</a>
+    </li>
+  </ul>
+{% else %}
+  <div class="alert alert-danger text-center">
+      Login para ver menu
+  </div>   
+
+{% endif %}
 
 {% endblock %}    

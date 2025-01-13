@@ -1,5 +1,5 @@
 from django import forms
-from .models import Move
+from .models import Move, Bank, Concept
 from django.utils.timezone import now
 
 class MoveForm(forms.ModelForm):
@@ -35,3 +35,14 @@ class MoveForm(forms.ModelForm):
             }),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if 'date' not in self.initial:  
+            self.initial['date'] = now().date()
+        if self.user:
+            self.fields['bank'].queryset = Bank.objects.filter(usuario=self.user)
+            self.fields['concept'].queryset = Concept.objects.filter(usuario=self.user)
+        else:
+            self.fields['bank'].queryset = Bank.objects.none()
+            self.fields['concept'].queryset = Concept.objects.none()            

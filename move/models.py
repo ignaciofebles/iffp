@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from concept.models import Concept
 from bank.models import Bank
@@ -17,6 +18,7 @@ class Move(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     bank=models.ForeignKey(Bank, on_delete=models.CASCADE)
     concept=models.ForeignKey(Concept, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     class Meta:
         db_table='moves'

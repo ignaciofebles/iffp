@@ -9,8 +9,10 @@ def concept(request):
     if request.method == 'POST':
         form = ConceptForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('concepts_list')  # Redirige a una página después de guardar
+            concept = form.save(commit=False)
+            concept.usuario = request.user
+            concept.save()
+            return redirect('concepts_list')  
     else:
         form = ConceptForm()
     return render(request, 'concept.html', {'form': form})
@@ -18,7 +20,7 @@ def concept(request):
 
 
 def concepts_list(request):
-    concepts = Concept.objects.all()
+    concepts = Concept.objects.filter(usuario=request.user)
     return render(request, 'concepts_list.html', {'concepts': concepts})
 
 

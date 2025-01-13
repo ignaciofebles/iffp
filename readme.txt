@@ -200,3 +200,4 @@ python manage.py showmigrations
 . Llevar migracion moves al estado 0002
 python manage.py migrate moves 0002
 
+https://chatgpt.com/share/67851548-58a4-8001-aa49-a45aa1a20a0d-----

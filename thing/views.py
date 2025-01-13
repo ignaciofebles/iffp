@@ -9,8 +9,10 @@ def thing(request):
     if request.method == 'POST':
         form = ThingForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('things_list')  # Redirige a una página después de guardar
+            thing = form.save(commit=False)
+            thing.usuario = request.user
+            thing.save()
+            return redirect('things_list') 
     else:
         form = ThingForm()
     return render(request, 'thing.html', {'form': form})
@@ -18,7 +20,7 @@ def thing(request):
 
 
 def things_list(request):
-    things = Thing.objects.all()
+    things = Thing.objects.filter(usuario=request.user)
     return render(request, 'things_list.html', {'things': things})
 
 

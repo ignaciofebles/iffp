@@ -12,18 +12,18 @@ def move_detail_view(request, move_id):
 
 
 def move(request):
-    if request.method == 'POST':
-        form = MoveForm(request.POST)
-        if form.is_valid():
-            new_move = form.save()
-            return redirect('move_detail', move_id=new_move.id)
-    else:
-        form = MoveForm()
-    return render(request, 'move.html', {'form': form})
+   form = MoveForm(request.POST, user=request.user)  # Pasar el usuario al formulario
+   if form.is_valid():
+      form.instance.usuario = request.user  # Asegura que el movimiento tiene el usuario
+      form.save()
+      return redirect('move_detail', move_id=form.instance.id)  # Redirigir al detalle del movimiento
+   else:
+      form = MoveForm(user=request.user)
+   return render(request, 'move.html', {'form': form})
 
 
 def moves_list(request):
-    moves = Move.objects.all()
+    moves = Move.objects.filter(usuario=request.user)
     return render(request, 'moves_list.html', {'moves': moves})
 
 
@@ -50,3 +50,18 @@ class MoveDetailView(DetailView):
 
     def get_object(self):
         return get_object_or_404(Move, id=self.kwargs['move_id'])    
+    
+
+
+
+# def move(request):
+#     if request.method == 'POST':
+#         form = MoveForm(request.POST, user=request.user)  # Pasar el usuario al formulario
+#         if form.is_valid():
+#             form.instance.usuario = request.user  # Asegura que el movimiento tiene el usuario
+#             form.save()
+#             return redirect('move_detail', move_id=form.instance.id)  # Redirigir al detalle del movimiento
+#     else:
+#         form = MoveForm(user=request.user)  # Pasar el usuario al formulario
+
+#     return render(request, 'move.html', {'form': form})    

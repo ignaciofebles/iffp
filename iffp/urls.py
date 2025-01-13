@@ -25,5 +25,7 @@ urlpatterns = [
     path('concept/', include('concept.urls')),
     path('move/', include('move.urls')),
     path('thing/', include('thing.urls')),
+    path('authentication/', include('authentication.urls')),
+
 
 ]
