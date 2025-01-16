@@ -1,6 +1,6 @@
 from django import forms
 from .models import Move, Bank, Concept
-from django.utils.timezone import now
+from django.utils import timezone
 
 class MoveForm(forms.ModelForm):
     class Meta:
@@ -14,11 +14,10 @@ class MoveForm(forms.ModelForm):
             'concept': 'Concepto'
         }
         widgets = {
-            'date': forms.DateInput(attrs={
-                'type': 'date',
+            'date': forms.TextInput(attrs={
                 'class': 'form-control',
-
-            }),
+                'placeholder': 'dd/mm/yyyy'
+            }),            
             'comentary': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Escribe un comentario',
@@ -36,13 +35,19 @@ class MoveForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
+        user = kwargs.pop('usuario', None)
         super().__init__(*args, **kwargs)
-        if 'date' not in self.initial:  
-            self.initial['date'] = now().date()
-        if self.user:
-            self.fields['bank'].queryset = Bank.objects.filter(usuario=self.user)
-            self.fields['concept'].queryset = Concept.objects.filter(usuario=self.user)
+        if not self.instance.pk and 'date' not in self.initial:
+            self.fields['date'].initial = timezone.now().date()
+            today = timezone.now().date()
+            formatted_date = today.strftime('%d/%m/%Y')  # Formato 'dd/mm/yyyy'
+            self.fields['date'].initial = formatted_date
+        
+        if user:
+            self.fields['bank'].queryset = Bank.objects.filter(usuario=user).order_by('description')
+            self.fields['concept'].queryset = Concept.objects.filter(usuario=user).order_by('description')
         else:
             self.fields['bank'].queryset = Bank.objects.none()
             self.fields['concept'].queryset = Concept.objects.none()            
+
+            

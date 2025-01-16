@@ -20,7 +20,7 @@ def concept(request):
 
 
 def concepts_list(request):
-    concepts = Concept.objects.filter(usuario=request.user)
+    concepts = Concept.objects.filter(usuario=request.user).order_by('description')
     return render(request, 'concepts_list.html', {'concepts': concepts})
 
 

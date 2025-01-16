@@ -12,18 +12,18 @@ def move_detail_view(request, move_id):
 
 
 def move(request):
-   form = MoveForm(request.POST, user=request.user)  # Pasar el usuario al formulario
+   form = MoveForm(request.POST, usuario=request.user)  # Pasar el usuario al formulario
    if form.is_valid():
       form.instance.usuario = request.user  # Asegura que el movimiento tiene el usuario
       form.save()
       return redirect('move_detail', move_id=form.instance.id)  # Redirigir al detalle del movimiento
    else:
-      form = MoveForm(user=request.user)
+      form = MoveForm(usuario=request.user)
    return render(request, 'move.html', {'form': form})
 
 
 def moves_list(request):
-    moves = Move.objects.filter(usuario=request.user)
+    moves = Move.objects.filter(usuario=request.user).order_by('-date')
     return render(request, 'moves_list.html', {'moves': moves})
 
 
@@ -32,9 +32,14 @@ class MoveEditView(UpdateView):
     form_class = MoveForm
     template_name = 'move.html'
     success_url = reverse_lazy('moves_list')
-
+    
     def get_object(self, queryset=None):
-        return Move.objects.get(id=self.kwargs['move_id'])
+        return Move.objects.get(id=self.kwargs['pk'])
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['usuario'] = self.request.user  # Pasar el usuario autenticado al formulario
+        return kwargs
 
 
 class MoveDeleteView(DeleteView):
@@ -51,17 +56,3 @@ class MoveDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(Move, id=self.kwargs['move_id'])    
     
-
-
-
-# def move(request):
-#     if request.method == 'POST':
-#         form = MoveForm(request.POST, user=request.user)  # Pasar el usuario al formulario
-#         if form.is_valid():
-#             form.instance.usuario = request.user  # Asegura que el movimiento tiene el usuario
-#             form.save()
-#             return redirect('move_detail', move_id=form.instance.id)  # Redirigir al detalle del movimiento
-#     else:
-#         form = MoveForm(user=request.user)  # Pasar el usuario al formulario
-
-#     return render(request, 'move.html', {'form': form})    

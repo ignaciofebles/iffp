@@ -2,11 +2,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from concept.models import Concept
 from bank.models import Bank
-from django.utils.timezone import now
+from django.utils import timezone
 
 # Create your models here.
 class Move(models.Model):
-    date=models.DateField(default=now)
+    date=models.DateField(default=timezone.now().date())
     comentary=models.CharField(max_length=80, null=False, blank=False)    
     amount = models.DecimalField(
         max_digits=10,     

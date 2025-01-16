@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <!-- Título centrado -->
-    <h3 class="text-center mb-4">Lista de Movimientos</h3>
+    <h3 class="text-center mb-4">Lista de transacciones</h3>
 
     <!-- Tabla responsiva -->
     <div class="table-responsive">
@@ -30,7 +30,7 @@
                     <td>{{ move.concept }}</td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center flex-wrap gap-2">
-                            <a href="{% url 'Move' move.id %}" class="btn btn-primary btn-sm">
+                            <a href="{% url 'Move' pk=move.id %}" class="btn btn-primary btn-sm">
                                 <i class="bi bi-pencil"></i> <!-- Ícono de editar -->
                                 <span class="d-none d-sm-inline">Editar</span>
                             </a>
@@ -43,7 +43,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center">No hay movimientos registrados</td>
+                    <td colspan="6" class="text-center">No hay transacciones registradas</td>
                 </tr>
                 {% endfor %}
             </tbody>

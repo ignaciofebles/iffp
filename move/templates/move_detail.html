@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Detalles del Movimiento</h1>
+    <h1 class="text-center mb-4">Detalles de la transacción</h1>
 
     <div class="row">
         <!-- Columna de detalles -->
@@ -17,7 +17,7 @@
                 <p><strong>Banco:</strong> {{ move.bank }}</p>
                 <p><strong>Concepto:</strong> {{ move.concept }}</p>
 
-                <div class="d-flex justify-content-between mt-3">
+                <div class="d-flex justify-content-center gap-2 mt-3">
                     <a class="btn btn-secondary" href="{% url 'Home' %}">Home</a>
                     <a class="btn btn-secondary" href="{% url 'Move' move.id %}">Editar</a>  
                     <a class="btn btn-success" href="{% url 'Move' %}">Nueva</a>

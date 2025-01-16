@@ -20,7 +20,7 @@ def thing(request):
 
 
 def things_list(request):
-    things = Thing.objects.filter(usuario=request.user)
+    things = Thing.objects.filter(usuario=request.user).order_by('code')
     return render(request, 'things_list.html', {'things': things})
 
 

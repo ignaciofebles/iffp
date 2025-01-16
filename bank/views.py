@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 
 
 # Create your views here.
-
 def bank(request):
     if request.method == 'POST':
         form = BankForm(request.POST)
@@ -22,7 +21,7 @@ def bank(request):
 
 
 def banks_list(request):    
-    banks = Bank.objects.filter(usuario=request.user)
+    banks = Bank.objects.filter(usuario=request.user).order_by('description')
     return render(request, 'banks_list.html', {'banks': banks})
 
 
