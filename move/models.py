@@ -6,7 +6,7 @@ from django.utils import timezone
 
 # Create your models here.
 class Move(models.Model):
-    date=models.DateField(default=timezone.now().date())
+    date=models.DateField(default=timezone.now)
     comentary=models.CharField(max_length=80, null=False, blank=False)    
     amount = models.DecimalField(
         max_digits=10,     
