@@ -6,9 +6,9 @@ from django.urls import reverse_lazy
 
 
 # Create your views here.
-def move_detail_view(request, move_id):
-    move = get_object_or_404(Move, id=move_id)
-    return render(request, 'move_detail.html', {'move': move})
+# def move_detail_view(request, move_id):
+#     move = get_object_or_404(Move, id=move_id)
+#     return render(request, 'move_detail.html', {'move': move})
 
 
 def move(request):

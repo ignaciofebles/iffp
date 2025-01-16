@@ -3,9 +3,8 @@
 {% load static %}
 
 {% block content %}
-
 <div class="container">
-    <h3 class="text-center mb-4 text-decoration">Lista de Bancos</h3>
+    <h3 class="text-center mb-4 text-decoration">Lista de bancos</h3>
 
     <!-- Tabla responsiva -->
     <div class="table-responsive">
@@ -13,6 +12,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>Descripción</th>
+                    <th class="text-end">Saldo</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -20,6 +20,10 @@
                 {% for bank in banks %}
                 <tr>
                     <td>{{ bank.description }}</td>
+                    <td class="text-end {% if bank.saldo < 0 %}text-danger{% else %}text-dark{% endif %}">
+                        {{ bank.saldo|floatformat:2 }}€
+                    </td>
+
                     <td class="text-center">
                         <!-- Contenedor flexbox para alinear botones -->
                         <div class="d-flex justify-content-center flex-wrap gap-2">

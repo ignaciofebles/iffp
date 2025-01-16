@@ -6,7 +6,7 @@
 <div class="container d-flex justify-content-center">
     <div class="col-12 col-sm-10 col-md-8 col-lg-6 text-center">
         <h3 class="mb-4">Confirmar eliminación</h3>
-        <p class="mb-4">¿Estás seguro de que deseas eliminar la cosa con la código: <strong>{{ thing.code }}</strong>?</p>
+        <p class="mb-4">¿Estás seguro de que deseas eliminar la nota con la código: <strong>{{ thing.code }}</strong>?</p>
         <form method="post" class="d-inline-block">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger me-2 mb-3 mb-sm-0">Eliminar</button>
