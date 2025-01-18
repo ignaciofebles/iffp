@@ -1,6 +1,7 @@
 {% extends "iffpApp/base.html" %}
 
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="container">
@@ -25,7 +26,7 @@
                 <tr>
                     <td>{{ move.date|date:"d/m/Y" }}</td>
                     <td>{{ move.comentary }}</td>
-                    <td class="text-end">{{ move.amount }}</td>
+                    <td class="text-end">{{ move.amount|custom_currency }}</td>
                     <td>{{ move.bank }}</td>
                     <td>{{ move.concept }}</td>
                     <td class="text-center">

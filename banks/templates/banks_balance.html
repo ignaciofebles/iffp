@@ -1,10 +1,11 @@
 {% extends "iffpApp/base.html" %}
 
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="container" style="max-width: 600px;">
-    <h3 class="text-center mb-4 text-decoration">Lista de bancos</h3>
+    <h3 class="text-center mb-4 text-decoration">Saldo de bancos</h3>
 
     <!-- Tabla responsiva -->
     <div class="table-responsive">
@@ -12,26 +13,38 @@
             <thead class="table-dark">
                 <tr>
                     <th>Descripción</th>
-                    <th class="text-center">Acciones</th>
+                    <th class="text-end">Saldo</th>
+                    <th class="text-center">Transacciones</th>
+                 </tr>
                 </tr>
             </thead>
             <tbody>
                 {% for bank in banks %}
                 <tr>
                     <td>{{ bank.description }}</td>
+                    <td class="text-end {% if bank.saldo < 0 %}text-danger{% else %}text-dark{% endif %}">
+                        {{ bank.saldo|custom_currency }}€
+                    </td>                    
                     <td class="text-center">
                         <!-- Contenedor flexbox para alinear botones -->
                         <div class="d-flex justify-content-center flex-wrap gap-2">
-                            <a href="{% url 'Bank' bank.id %}" class="btn btn-primary btn-sm">Editar</a>
-                            <a href="{% url 'bank_delete' bank.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{% url 'bank_transactions' bank.id %}" class="btn btn-info btn-sm">Transacciones</a>
                         </div>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="2" class="text-center">No hay bancos registrados</td>
+                    <td colspan="2" class="text-center">No hay transacciones</td>
                 </tr>
                 {% endfor %}
+                <!-- Fila para mostrar la suma total -->
+                <tr class="table-secondary fw-bold">
+                    <td>Total</td>
+                    <td class="text-end {% if total_balance < 0 %}text-danger{% else %}text-dark{% endif %}">                        
+                        {{ total_balance|custom_currency }}€      
+                    </td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -43,3 +56,7 @@
     </div>
 </div>
 {% endblock %}
+
+
+
+

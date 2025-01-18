@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'concept',
     'move',
     'thing',
+    'banks',
     'authentication',
     'crispy_forms',
     'crispy_bootstrap4',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +73,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+                'libraries': {
+                    'custom_filters': 'shared.templatetags.custom_filters',  # Aquí agregas la entrada
+            },
         },
     },
 ]
