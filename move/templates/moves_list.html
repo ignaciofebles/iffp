@@ -8,6 +8,34 @@
     <!-- Título centrado -->
     <h3 class="text-center mb-4">Lista de transacciones</h3>
 
+    <!-- Formulario de filtro -->
+    <form method="get" class="mb-4">
+        <div class="row align-items-end">
+            <!-- Campo Desde -->
+            <div class="col-md-3">
+                <label for="start_date" class="form-label">Desde</label>
+                <input type="date" id="start_date" name="start_date" class="form-control form-control-sm" value="{{ request.GET.start_date }}">
+            </div>
+            <!-- Campo Hasta -->
+            <div class="col-md-3">
+                <label for="end_date" class="form-label">Hasta</label>
+                <input type="date" id="end_date" name="end_date" class="form-control form-control-sm" value="{{ request.GET.end_date }}">
+            </div>
+            <!-- Campo Comentario -->
+            <div class="col-md-4">
+                <label for="search_commentary" class="form-label">Comentario</label>
+                <input type="text" id="search_commentary" name="search_commentary" class="form-control form-control-sm" placeholder="Buscar por comentario" value="{{ request.GET.search_commentary }}">
+            </div>
+            <!-- Botones Filtrar y Limpiar -->
+            <div class="col-md-1 d-flex justify-content-start">
+                <button type="submit" class="btn btn-primary btn-sm w-100">Filtrar</button>
+            </div>
+            <div class="col-md-1 d-flex justify-content-start">
+                <a href="{% url 'moves_list' %}" class="btn btn-secondary btn-sm w-100">Limpiar</a>
+            </div>
+        </div>
+    </form>
+
     <!-- Tabla responsiva -->
     <div class="table-responsive">
         <table class="table table-striped table-bordered align-middle">
@@ -32,11 +60,11 @@
                     <td class="text-center">
                         <div class="d-flex justify-content-center flex-wrap gap-2">
                             <a href="{% url 'Move' pk=move.id %}" class="btn btn-primary btn-sm">
-                                <i class="bi bi-pencil"></i> <!-- Ícono de editar -->
+                                <i class="bi bi-pencil"></i>
                                 <span class="d-none d-sm-inline">Editar</span>
                             </a>
                             <a href="{% url 'move_delete' move.id %}" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i> <!-- Ícono de eliminar -->
+                                <i class="bi bi-trash"></i>
                                 <span class="d-none d-sm-inline">Eliminar</span>
                             </a>
                         </div>
@@ -51,7 +79,7 @@
         </table>
     </div>
 
-    <!-- Enlaces adicionales centrados -->
+    <!-- Enlaces adicionales -->
     <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
         <a class="btn btn-secondary" href="{% url 'Home' %}">Home</a>
         <a class="btn btn-success" href="{% url 'Move' %}">Nueva</a>

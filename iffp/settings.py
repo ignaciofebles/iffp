@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'thing',
     'banks',
     'authentication',
+    'concepts',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.humanize',

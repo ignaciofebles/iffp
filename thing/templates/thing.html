@@ -1,5 +1,4 @@
 {% extends "iffpApp/base.html" %}
-
 {% load static %}
 
 {% block content %}
@@ -8,9 +7,29 @@
         <h3 class="text-center mb-4">Nota</h3>
         <form method="post">
             {% csrf_token %}
+            
+            <!-- Campo Código -->
             <div class="mb-3">
-                {{ form.as_table }}
+                <label for="id_code" class="form-label">{{ form.code.label }}</label>
+                {{ form.code }}
+                {% if form.code.errors %}
+                    <div class="text-danger">
+                        {{ form.code.errors }}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Campo Descripción -->
+            <div class="mb-3">
+                <label for="id_description" class="form-label">{{ form.description.label }}</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="text-danger">
+                        {{ form.description.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
             <div class="text-center">
                 <input type="submit" value="Guardar" class="btn btn-primary">
             </div>

@@ -1,0 +1,78 @@
+{% extends "iffpApp/base.html" %}
+
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container" style="max-width: 600px;">
+    <h3 class="text-center mb-4 text-decoration">Saldo de conceptos</h3>
+
+    <!-- Tabla responsiva -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Descripción</th>
+                    <th class="text-end">Saldo</th>
+                    <th class="text-center">Transacciones</th>
+                 </tr>
+                </tr>
+            </thead>
+            <tbody>
+                {% for concept in concepts %}
+                <tr>
+                    <td>{{ concept.description }}</td>
+                    <td class="text-end {% if concept.saldo < 0 %}text-danger{% else %}text-dark{% endif %}">
+                        {{ concept.saldo|custom_currency }}€
+                    </td>                    
+                    <td class="text-center">
+                        <!-- Contenedor flexbox para alinear botones -->
+                        <div class="d-flex justify-content-center flex-wrap gap-2">
+                            <a href="{% url 'concept_transactions' concept.id %}" class="btn btn-info btn-sm">Transacciones</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" class="text-center">No hay transacciones</td>
+                </tr>
+                {% endfor %}
+                <tr class="table-secondary fw-bold">
+                    <td>Subtotal ingresos</td>
+                    <td class="text-end {% if total_ingresos < 0 %}text-danger{% else %}text-dark{% endif %}">                        
+                        {{ total_ingresos|custom_currency }}€      
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="table-secondary fw-bold">
+                    <td>Subtotal egresos</td>
+                    <td class="text-end {% if total_egresos < 0 %}text-danger{% else %}text-dark{% endif %}">                        
+                        {{ total_egresos|custom_currency }}€      
+                    </td>
+                    <td></td>
+                </tr>
+                <tr class="table-secondary fw-bold">
+                    <td>Total</td>
+                    <td class="text-end {% if total_general < 0 %}text-danger{% else %}text-dark{% endif %}">                        
+                        {{ total_general|custom_currency }}€      
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Enlaces adicionales -->
+    <div class="text-center mt-4">
+        <a class="btn btn-secondary me-2" href="{% url 'Home' %}">Home</a>
+        <a class="btn btn-success" href="{% url 'Concept' %}">Nuevo</a>
+        <a class="btn btn-success" href="{% url 'Move' %}">Nueva transacción</a>
+        <a class="btn btn-success" href="{% url 'banks_balance' %}">Bancos</a>
+
+    </div>
+</div>
+{% endblock %}
+
+
+
+

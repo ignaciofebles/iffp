@@ -27,4 +27,5 @@ urlpatterns = [
     path('thing/', include('thing.urls')),
     path('authentication/', include('authentication.urls')),
     path('banks/', include('banks.urls')),
+    path('conceps/', include('concepts.urls')),
 ]

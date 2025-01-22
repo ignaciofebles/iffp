@@ -8,12 +8,16 @@ class ThingForm(forms.ModelForm):
         fields = ['code', 'description']
         labels = {
             'code': 'Código',
-            'description': 'Descripción'            
+            'description': 'Descripción',
         }
         widgets = {
             'code': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Código',
-            })
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ingrese la descripción aquí',
+                'rows': 10, 
+            }),
         }
-
