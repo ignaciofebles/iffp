@@ -20,23 +20,6 @@ def thing(request):
 
 
 
-# def things_list(request):
-#     search_term = request.GET.get('search', '').strip()
-
-#     if search_term:
-#         things = Thing.objects.filter(usuario=request.user, code__icontains=search_term).order_by('code')
-
-#         if not things.exists():
-#             things = Thing.objects.filter(usuario=request.user, description__icontains=search_term).order_by('code')
-#     else:
-#         things = Thing.objects.filter(usuario=request.user).order_by('code')
-    
-        
-#     context = {
-#         'things': things,
-#     }
-#     return render(request, 'things_list.html', context)
-
 def things_list(request):
     search_term = request.GET.get('search', '').strip()
 

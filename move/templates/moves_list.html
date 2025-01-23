@@ -5,6 +5,12 @@
 
 {% block content %}
 <div class="container">
+    <div class="text-center mt-4">
+        <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
+        <a class="text-decoration-none" href="{% url 'banks_balance' %}">Bancos</a>
+        <a class="text-decoration-none" href="{% url 'concepts_balance' %}">Conceptos</a>
+    </div>
+
     <!-- Título centrado -->
     <h3 class="text-center mb-4">Lista de transacciones</h3>
 
@@ -22,9 +28,18 @@
                 <input type="date" id="end_date" name="end_date" class="form-control form-control-sm" value="{{ request.GET.end_date }}">
             </div>
             <!-- Campo Comentario -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="search_commentary" class="form-label">Comentario</label>
                 <input type="text" id="search_commentary" name="search_commentary" class="form-control form-control-sm" placeholder="Buscar por comentario" value="{{ request.GET.search_commentary }}">
+            </div>
+            <!-- Campo Resultados por página -->
+            <div class="col-md-1">
+                <label for="results_per_page" class="form-label">Resultados por página</label>
+                <select id="results_per_page" name="results_per_page" class="form-select form-select-sm">
+                    <option value="50" {% if request.GET.results_per_page == '50' %}selected{% endif %}>50</option>
+                    <option value="100" {% if request.GET.results_per_page == '100' %}selected{% endif %}>100</option>
+                    <option value="200" {% if request.GET.results_per_page == '200' %}selected{% endif %}>200</option>
+                </select>
             </div>
             <!-- Botones Filtrar y Limpiar -->
             <div class="col-md-1 d-flex justify-content-start">
@@ -79,6 +94,31 @@
         </table>
     </div>
 
+    <!-- Paginación -->
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            {% if moves.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ moves.previous_page_number }}">Anterior</a>
+            </li>
+            {% endif %}
+
+            {% for num in moves.paginator.page_range %}
+            {% if moves.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > moves.number|add:'-3' and num < moves.number|add:'3' %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if moves.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ moves.next_page_number }}">Siguiente</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
     <!-- Enlaces adicionales -->
     <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
         <a class="btn btn-secondary" href="{% url 'Home' %}">Home</a>
@@ -86,3 +126,4 @@
     </div>
 </div>
 {% endblock %}
+

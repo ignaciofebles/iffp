@@ -4,7 +4,6 @@ from .forms import BankForm
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-
 # Create your views here.
 def bank(request):
     if request.method == 'POST':
@@ -23,6 +22,7 @@ def bank(request):
 def banks_list(request):    
     banks = Bank.objects.filter(usuario=request.user).order_by('description')
     return render(request, 'banks_list.html', {'banks': banks})
+
 
 class BankEditView(UpdateView):
     model = Bank

@@ -4,6 +4,13 @@
 
 {% block content %}
 <div class="container" style="max-width: 600px;">
+    <div class="text-center mt-4">
+        <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
+        <a class="text-decoration-none" href="{% url 'Move' %}">Nueva transacción</a>
+        <a class="text-decoration-none" href="{% url 'banks_balance' %}">Bancos</a>
+        <a class="text-decoration-none" href="{% url 'concepts_balance' %}">Conceptos</a>
+    </div>
+
     <h3 class="text-center mb-4 text-decoration">Transacciones para {{ concept.description }}</h3>
 
     <div class="table-responsive">

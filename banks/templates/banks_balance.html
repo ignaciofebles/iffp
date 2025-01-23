@@ -5,6 +5,12 @@
 
 {% block content %}
 <div class="container" style="max-width: 600px;">
+    <div class="text-center mt-4">
+        <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
+        <a class="text-decoration-none" href="{% url 'Move' %}">Nueva transacción</a>
+        <a class="text-decoration-none" href="{% url 'concepts_balance' %}">Conceptos</a>
+    </div>
+    
     <h3 class="text-center mb-4 text-decoration">Saldo de bancos</h3>
 
     <!-- Tabla responsiva -->

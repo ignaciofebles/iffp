@@ -3,14 +3,9 @@ from move.models import Move
 from .forms import MoveForm
 from django.views.generic import UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
-
+from django.core.paginator import Paginator
 
 # Create your views here.
-# def move_detail_view(request, move_id):
-#     move = get_object_or_404(Move, id=move_id)
-#     return render(request, 'move_detail.html', {'move': move})
-
-
 def move(request):
    form = MoveForm(request.POST, usuario=request.user)  # Pasar el usuario al formulario
    if form.is_valid():
@@ -22,18 +17,11 @@ def move(request):
    return render(request, 'move.html', {'form': form})
 
 
-# def moves_list(request):
-#     moves = Move.objects.filter(usuario=request.user).order_by('-date')
-#     return render(request, 'moves_list.html', {'moves': moves})
-
-# from django.shortcuts import render
-# from .models import Move
-# from django.db.models import Q
-
 def moves_list(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     search_commentary = request.GET.get('search_commentary', '').strip()
+    results_per_page = request.GET.get('results_per_page', '50')  # Valor por defecto 50
 
     # Filtrar las transacciones
     moves = Move.objects.filter(usuario=request.user).order_by('-date')
@@ -45,32 +33,16 @@ def moves_list(request):
     if search_commentary:
         moves = moves.filter(comentary__icontains=search_commentary)  # Filtrar por comentario
 
+    # Paginación
+    paginator = Paginator(moves, results_per_page)  # Paginador con los resultados por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'moves': moves,
+        'moves': page_obj,  # Usar el objeto de la página
     }
     return render(request, 'moves_list.html', context)
-
-
-    # start_date = request.GET.get('start_date')
-    # end_date = request.GET.get('end_date')
-    # search_commentary = request.GET.get('search_commentary', '').strip()
-
-    # # Filtrar las transacciones
-    # moves = Move.objects.all()
-
-    # if start_date:
-    #     moves = moves.filter(date__gte=start_date)  # Filtrar desde la fecha inicial
-    # if end_date:
-    #     moves = moves.filter(date__lte=end_date)  # Filtrar hasta la fecha final
-    # if search_commentary:
-    #     moves = moves.filter(comentary__icontains=search_commentary)  # Filtrar por comentario
-
-    # context = {
-    #     'moves': moves,
-    # }
-    # return render(request, 'move_list.html', context)
-
-
+    
 
 class MoveEditView(UpdateView):
     model = Move
