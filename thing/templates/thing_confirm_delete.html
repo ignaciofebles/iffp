@@ -10,7 +10,7 @@
         <form method="post" class="d-inline-block">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger me-2 mb-3 mb-sm-0">Eliminar</button>
-            <a href="{% url 'banks_list' %}" class="btn btn-secondary mb-3 mb-sm-0">Cancelar</a>
+            <a href="{% url 'things_list' %}" class="btn btn-secondary mb-3 mb-sm-0">Cancelar</a>
         </form>
         <div class="mt-4">
             <a class="nav-link text-uppercase text-expanded btn btn-link" href="{% url 'Home' %}">Home</a>

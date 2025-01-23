@@ -32,8 +32,8 @@
             <tbody>
                 {% for thing in things %}
                 <tr>
-                    <td>{{ thing.code }}</td>
-                    <td>{{ thing.description|slice:":20" }}{% if thing.description|length > 20 %}...{% endif %}</td> <!-- Muestra los primeros 20 caracteres de descripción -->
+                    <td>{{ thing.code|slice:":30" }}{% if thing.code|length > 30 %}...{% endif %}</td>
+                    <td>{{ thing.description|slice:":30" }}{% if thing.description|length > 30 %}...{% endif %}</td>
                     <td class="text-center">
                         <!-- Contenedor flexbox para alinear botones -->
                         <div class="d-flex justify-content-center flex-wrap gap-2">
