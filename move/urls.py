@@ -8,6 +8,6 @@ urlpatterns = [
     path('<int:pk>/edit/', views.MoveEditView.as_view(), name='Move'),
     path('<int:pk>/delete/', views.MoveDeleteView.as_view(), name='move_delete'),
     path('<int:move_id>/view/', views.MoveDetailView.as_view(), name='move_detail'),
-
+    path('move-chart/', views.move_chart_view, name='move_chart'),
 ]
 

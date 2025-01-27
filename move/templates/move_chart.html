@@ -1,0 +1,15 @@
+{% extends "iffpApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div>
+    <h2 class="text-center">Gráfico de Transacciones por Concepto</h2>
+    
+    <img src="{% url 'move_chart' %}" alt="Gráfico de Transacciones">
+</div>
+
+{% endblock %}
+
+

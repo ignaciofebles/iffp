@@ -4,6 +4,17 @@ from .forms import MoveForm
 from django.views.generic import UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
+from django.db.models import Sum
+# import matplotlib.pyplot as plt
+import io
+from django.http import HttpResponse
+
+import plotly.express as px
+import plotly.io as pio
+import pandas as pd
+
+
+
 
 # Create your views here.
 def move(request):
@@ -73,3 +84,90 @@ class MoveDetailView(DetailView):
     def get_object(self):
         return get_object_or_404(Move, id=self.kwargs['move_id'])    
     
+
+# def move_chart_view(request):
+#     # Obtener datos agrupados por conceptos
+#     data = (
+#         Move.objects.values("concept__description")  # Agrupar por descripción del concepto
+#         .annotate(total_amount=Sum("amount"))       # Sumar los montos por concepto
+#         .order_by("-total_amount")                  # Ordenar de mayor a menor
+#     )
+
+#     # Extraer etiquetas (conceptos) y valores (montos)
+#     labels = [item["concept__description"] for item in data]
+#     values = [item["total_amount"] for item in data]
+
+#     # Crear el gráfico
+#     plt.figure(figsize=(10, 6))
+#     plt.bar(labels, values, color="skyblue")
+#     plt.title("Transacciones por Concepto", fontsize=16)
+#     plt.xlabel("Concepto", fontsize=12)
+#     plt.ylabel("Monto Total (€)", fontsize=12)
+#     plt.xticks(rotation=45, ha="right")
+#     plt.tight_layout()
+
+#     # Guardar el gráfico en un buffer
+#     buffer = io.BytesIO()
+#     plt.savefig(buffer, format="png")
+#     buffer.seek(0)
+#     plt.close()
+
+#     # Devolver el gráfico como una respuesta HTTP
+#     return HttpResponse(buffer, content_type="image/png")
+
+
+
+# def move_chart_view(request):
+#     # Obtener datos agrupados por conceptos
+#     data = (
+#         Move.objects.values("concept__description")
+#         .annotate(total_amount=Sum("amount"))
+#         .order_by("-total_amount")
+#     )
+
+#     labels = [item["concept__description"] for item in data]
+#     values = [item["total_amount"] for item in data]
+
+#     # Crear el gráfico con Plotly
+#     fig = px.bar(
+#         x=labels,
+#         y=values,
+#         labels={"x": "Concepto", "y": "Monto Total (€)"},
+#         title="Transacciones por Concepto",
+#     )
+
+#     # Convertir el gráfico a imagen
+#     buffer = io.BytesIO()
+#     pio.write_image(fig, buffer, format="png", width=800, height=600)
+#     buffer.seek(0)
+
+#     # Devolver la imagen como respuesta
+#     return HttpResponse(buffer, content_type="image/png")
+
+
+
+def move_chart_view(request):
+    # Obtener los datos del modelo y transformarlos en un DataFrame
+    data = (
+        Move.objects.values("concept__description")  # Agrupar por concepto
+        .annotate(total_amount=Sum("amount"))       # Sumar los montos por concepto
+        .order_by("-total_amount")                  # Ordenar de mayor a menor
+    )
+    df = pd.DataFrame(data)  # Convertir a DataFrame de Pandas
+
+    # Crear el gráfico con Plotly
+    fig = px.bar(
+        df,
+        x="concept__description",
+        y="total_amount",
+        labels={"concept__description": "Concepto", "total_amount": "Monto Total (€)"},
+        title="Transacciones por Concepto",
+    )
+
+    # Guardar el gráfico como imagen
+    buffer = io.BytesIO()
+    pio.write_image(fig, buffer, format="png", width=800, height=600)
+    buffer.seek(0)
+
+    # Retornar la imagen como respuesta HTTP
+    return HttpResponse(buffer, content_type="image/png")
