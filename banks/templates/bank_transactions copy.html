@@ -3,15 +3,7 @@
 {% load custom_filters %}
 
 {% block content %}
-<div class="container" style="max-width: 800px;">
-    
-    <div class="text-center mt-4">
-        <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
-        <a class="text-decoration-none" href="{% url 'Move' %}">Nueva transacción</a>
-        <a class="text-decoration-none" href="{% url 'banks_balance' %}">Bancos</a>
-        <a class="text-decoration-none" href="{% url 'concepts_balance' %}">Conceptos</a>
-    </div>    
-
+<div class="container" style="max-width: 600px;">
     <h3 class="text-center mb-4 text-decoration">Transacciones para {{ bank.description }}</h3>
 
     <div class="table-responsive">
@@ -35,7 +27,7 @@
                     <td>{{ move.comentary }}</td>
                     <td>{{ move.concept.description }}</td>
                     <td class="text-center" style="white-space: nowrap;">
-                        <a href="{% url 'Move' pk=move.id %}" class="btn btn-primary btn-sm me-1">
+                        <a href="{% url 'Move' pk=move.id %}" class="btn btn-primary btn-sm me-0">
                             <i class="bi bi-pencil"></i> <!-- Ícono de editar -->
                             <span class="d-none d-sm-inline">Editar</span>
                         </a>
@@ -44,6 +36,8 @@
                             <span class="d-none d-sm-inline">Eliminar</span>
                         </a>
                     </td>
+
+                    
                 </tr>
                 {% empty %}
                 <tr>
