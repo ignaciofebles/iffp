@@ -29,7 +29,7 @@
                 <tr>
                     <td>{{ concept.description }}</td>
                     <td class="text-end {% if concept.saldo < 0 %}text-danger{% else %}text-dark{% endif %}">
-                        {{ concept.saldo|custom_currency }}€
+                        {{ concept.saldo|custom_currency }}
                     </td>                    
                     <td class="text-center">
                         <!-- Contenedor flexbox para alinear botones -->
@@ -46,21 +46,21 @@
                 <tr class="table-secondary fw-bold">
                     <td>Subtotal ingresos</td>
                     <td class="text-end {% if total_ingresos < 0 %}text-danger{% else %}text-dark{% endif %}">                        
-                        {{ total_ingresos|custom_currency }}€      
+                        {{ total_ingresos|custom_currency }}
                     </td>
                     <td></td>
                 </tr>
                 <tr class="table-secondary fw-bold">
                     <td>Subtotal egresos</td>
                     <td class="text-end {% if total_egresos < 0 %}text-danger{% else %}text-dark{% endif %}">                        
-                        {{ total_egresos|custom_currency }}€      
+                        {{ total_egresos|custom_currency }}
                     </td>
                     <td></td>
                 </tr>
                 <tr class="table-secondary fw-bold">
                     <td>Total</td>
                     <td class="text-end {% if total_general < 0 %}text-danger{% else %}text-dark{% endif %}">                        
-                        {{ total_general|custom_currency }}€      
+                        {{ total_general|custom_currency }} 
                     </td>
                     <td></td>
                 </tr>

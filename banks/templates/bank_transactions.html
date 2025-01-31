@@ -30,7 +30,7 @@
                 <tr>
                     <td>{{ move.date|date:"d/m/Y" }}</td>
                     <td class="text-end {% if move.concept.type == 'EG' %}text-danger{% endif %}">
-                        {{ move.amount|custom_currency }}€
+                        {{ move.amount|custom_currency }}
                     </td>
                     <td>{{ move.comentary }}</td>
                     <td>{{ move.concept.description }}</td>

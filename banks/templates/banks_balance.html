@@ -29,7 +29,7 @@
                 <tr>
                     <td>{{ bank.description }}</td>
                     <td class="text-end {% if bank.saldo < 0 %}text-danger{% else %}text-dark{% endif %}">
-                        {{ bank.saldo|custom_currency }}€
+                        {{ bank.saldo|custom_currency }}
                     </td>                    
                     <td class="text-center">
                         <!-- Contenedor flexbox para alinear botones -->
@@ -47,7 +47,7 @@
                 <tr class="table-secondary fw-bold">
                     <td>Total</td>
                     <td class="text-end {% if total_balance < 0 %}text-danger{% else %}text-dark{% endif %}">                        
-                        {{ total_balance|custom_currency }}€      
+                        {{ total_balance|custom_currency }}
                     </td>
                     <td></td>
                 </tr>
