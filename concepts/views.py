@@ -6,12 +6,26 @@ from move.models import Move
 # Create your views here.
 
 def concepts_balance(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    # Filtrar las transacciones
+    moves = Move.objects.filter(usuario=request.user).order_by('-date')
+
+    if start_date:
+        moves = moves.filter(date__gte=start_date)  # Filtrar desde la fecha inicial
+    if end_date:
+        moves = moves.filter(date__lte=end_date)  # Filtrar hasta la fecha final
+
+    # return render(request, 'moves_list.html', context)    
     concepts = Concept.objects.filter(usuario=request.user).order_by('description')    
     total_ingresos = 0
     total_egresos = 0
     for concepto in concepts:
-        ingresos = Move.objects.filter(concept=concepto, concept__type='IN', concept__transfer=False).aggregate(total=Sum('amount'))['total'] or 0
-        egresos = Move.objects.filter(concept=concepto, concept__type='EG', concept__transfer=False).aggregate(total=Sum('amount'))['total'] or 0
+        # ingresos = Move.objects.filter(concept=concepto, concept__type='IN', concept__transfer=False).aggregate(total=Sum('amount'))['total'] or 0
+        # egresos = Move.objects.filter(concept=concepto, concept__type='EG', concept__transfer=False).aggregate(total=Sum('amount'))['total'] or 0
+        ingresos = moves.filter(concept=concepto, concept__type='IN', concept__transfer=False).aggregate(total=Sum('amount'))['total'] or 0
+        egresos = moves.filter(concept=concepto, concept__type='EG', concept__transfer=False).aggregate(total=Sum('amount'))['total'] or 0
         concepto.saldo = ingresos - egresos
         total_ingresos += ingresos or 0
         total_egresos += egresos or 0
