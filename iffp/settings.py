@@ -21,7 +21,7 @@ import os
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-1lyv^e@rlxil1_ddc-!vvu)nh@%o&e6c@j5=69geqmi89l@*q_'
-SECRET_KEY = os.environment.get('SECRET_KEY', default='adfafeacvadfabaadsfadf')
+SECRET_KEY = os.environ.get('SECRET_KEY', default='adfafeacvadfabaadsfadf')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -147,7 +147,7 @@ STATIC_URL = 'static/'
 if not DEBUG:
     STATIT_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATITFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT=BASE_DIR / 'media/'
 
