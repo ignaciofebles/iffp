@@ -96,12 +96,20 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'iffp_data',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'postgres1*',
+        # 'HOST': 'localhost',
+        # 'DATABASE_PORT': '5432',
+
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'iffp_data',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres1*',
-        'HOST': 'localhost',
+        'NAME': 'iffp_data_9jda',
+        'USER': 'iffp_data_9jda_user',
+        'PASSWORD': 'Hq2WEbmn96Wht1A0U23GwLSEECl0OQkA',
+        'HOST': 'dpg-cuf22qtumphs73apto8g-a.oregon-postgres.render.com',
         'DATABASE_PORT': '5432',
+
         'OPTIONS': {
             'client_encoding': 'UTF8',  # Asegúrate de usar UTF-8
         }        
