@@ -50,7 +50,7 @@ def moves_list(request):
     context = {
         'moves': page_obj,  # Usar el objeto de la página
     }
-    return render(request, 'moves_list.html', context)
+    return render(request, 'moves_list.html', context) 
     
 
 class MoveEditView(UpdateView):

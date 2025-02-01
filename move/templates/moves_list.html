@@ -34,7 +34,7 @@
             </div>
             <!-- Campo Resultados por página -->
             <div class="col-md-1">
-                <label for="results_per_page" class="form-label">Resultados por página</label>
+                <label for="results_per_page" class="form-label">Res./pág.</label>
                 <select id="results_per_page" name="results_per_page" class="form-select form-select-sm">
                     <option value="50" {% if request.GET.results_per_page == '50' %}selected{% endif %}>50</option>
                     <option value="100" {% if request.GET.results_per_page == '100' %}selected{% endif %}>100</option>
@@ -96,6 +96,12 @@
     <div class="d-flex justify-content-center">
         <ul class="pagination">
             {% if moves.has_previous %}
+            <!-- Botón de Inicio -->
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page=1">Inicio</a>
+            </li>
+            
+            <!-- Botón Anterior -->
             <li class="page-item">
                 <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ moves.previous_page_number }}">Anterior</a>
             </li>
@@ -105,13 +111,21 @@
             {% if moves.number == num %}
             <li class="page-item active"><span class="page-link">{{ num }}</span></li>
             {% elif num > moves.number|add:'-3' and num < moves.number|add:'3' %}
-            <li class="page-item"><a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ num }}">{{ num }}</a>
+            </li>
             {% endif %}
             {% endfor %}
 
             {% if moves.has_next %}
+            <!-- Botón Siguiente -->
             <li class="page-item">
                 <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ moves.next_page_number }}">Siguiente</a>
+            </li>
+            
+            <!-- Botón Final -->
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.start_date %}start_date={{ request.GET.start_date }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date }}&{% endif %}{% if request.GET.search_commentary %}search_commentary={{ request.GET.search_commentary }}&{% endif %}{% if request.GET.results_per_page %}results_per_page={{ request.GET.results_per_page }}&{% endif %}page={{ moves.paginator.num_pages }}">Final</a>
             </li>
             {% endif %}
         </ul>
