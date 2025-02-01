@@ -3,7 +3,7 @@
 {% load custom_filters %}
 
 {% block content %}
-<div class="container" style="max-width: 600px;">
+<div class="container" style="max-width: 800px;">
     <div class="text-center mt-4">
         <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
         <a class="text-decoration-none" href="{% url 'Move' %}">Nueva transacción</a>
@@ -18,35 +18,46 @@
             <thead class="table-dark">
                 <tr>
                     <th>Fecha</th>
-                    <th class="text-end">Monto</th>
+                    <th class="text-end">Importe</th>
+                    <th class="text-end">Acumulado</th>
                     <th>Comentario</th>
                     <th>Banco</th>
-                    <th class="text-center" style="white-space: nowrap;">Acciones</th>
+                    <th class="text-center" style="white-space: nowrap; width: 150px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                {% for move in moves %}
-                <tr>
-                    <td>{{ move.date|date:"d/m/Y" }}</td>
-                    <td class="text-end {% if move.concept.type == 'EG' %}text-danger{% endif %}">
-                        {{ move.amount|custom_currency }}
-                    </td>
-                    <td>{{ move.comentary }}</td>
-                    <td>{{ move.bank.description }}</td>
-                    <td class="text-center" style="white-space: nowrap;">
-                        <a href="{% url 'Move' pk=move.id %}" class="btn btn-primary btn-sm me-1">
-                            <i class="bi bi-pencil"></i> <!-- Ícono de editar -->
-                            <span class="d-none d-sm-inline">Editar</span>
-                        </a>
-                        <a href="{% url 'move_delete' move.id %}" class="btn btn-danger btn-sm">
-                            <i class="bi bi-trash"></i> <!-- Ícono de eliminar -->
-                            <span class="d-none d-sm-inline">Eliminar</span>
-                        </a>
-                    </td>
-                </tr>
+                {% for item in moves_with_sums %}
+                    {% if item.is_new_month or forloop.counter0 == 0%}
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <strong>{{ item.move.date|date:"F Y"|capfirst }}</strong>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>{{ item.move.date|date:"d/m/Y" }}</td>
+                        <td class="text-end {% if item.move.concept.type == 'EG' %}text-danger{% endif %}" style="white-space: nowrap;">
+                            {{ item.move.amount|custom_currency }}
+                        </td>
+                        <td class="text-end" style="white-space: nowrap;">
+                            {{ item.running_total|custom_currency }}
+                        </td>
+                        <td>{{ item.move.comentary }}</td>
+                        <td>{{ item.move.bank.description }}</td>
+                        <td class="text-center" style="white-space: nowrap;">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{% url 'Move' pk=item.move.id %}" class="btn btn-primary btn-sm" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'move_delete' item.move.id %}" class="btn btn-danger btn-sm" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" class="text-center">No hay transacciones registradas</td>
+                    <td colspan="6" class="text-center">No hay transacciones registradas</td>
                 </tr>
                 {% endfor %}
             </tbody>

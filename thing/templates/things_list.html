@@ -5,6 +5,13 @@
 {% block content %}
 
 <div class="container">
+    <div class="text-center mt-4">
+        <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
+        <a class="text-decoration-none" href="{% url 'Move' %}">Nueva transacción</a>
+        <a class="text-decoration-none" href="{% url 'banks_balance' %}">Bancos</a>
+        <a class="text-decoration-none" href="{% url 'concepts_balance' %}">Conceptos</a>
+    </div>
+    
     <h3 class="text-center mb-4 text-decoration">Lista de notas</h3>
 
     <!-- Formulario de búsqueda -->
@@ -25,7 +32,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>Código</th>
-                    <th>Descripción</th>  <!-- Nueva columna para descripción -->
+                    <th>Descripción</th>  
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -35,10 +42,13 @@
                     <td>{{ thing.code|slice:":30" }}{% if thing.code|length > 30 %}...{% endif %}</td>
                     <td>{{ thing.description|slice:":30" }}{% if thing.description|length > 30 %}...{% endif %}</td>
                     <td class="text-center">
-                        <!-- Contenedor flexbox para alinear botones -->
                         <div class="d-flex justify-content-center flex-wrap gap-2">
-                            <a href="{% url 'Thing' thing.id %}" class="btn btn-primary btn-sm">Editar</a>
-                            <a href="{% url 'thing_delete' thing.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{% url 'Thing' thing.id %}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'thing_delete' thing.id %}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -51,7 +61,6 @@
         </table>
     </div>
 
-    <!-- Enlaces adicionales -->
     <div class="text-center mt-4">
         <a class="btn btn-secondary me-2" href="{% url 'Home' %}">Home</a>
         <a class="btn btn-success" href="{% url 'Thing' %}">Nuevo</a>

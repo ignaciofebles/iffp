@@ -43,3 +43,11 @@ a.nav-link:hover {
     color: #0056b3;
 }
 
+.col-amount {
+    /* min-width: 200px;  */
+    white-space: nowrap;
+}
+
+td.col-amount {
+    white-space: nowrap !important;
+}
