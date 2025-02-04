@@ -8,7 +8,7 @@ from shared.utils import get_bank_balance
 def banks_balance(request):    
     banks = Bank.objects.filter(usuario=request.user).order_by('description')
     for banco in banks:
-        banco.saldo = get_bank_balance(banco)
+        banco.saldo = get_bank_balance(request, banco)
     total_balance = sum(bank.saldo for bank in banks)
 
     return render(request, 'banks_balance.html', {

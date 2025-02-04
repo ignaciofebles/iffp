@@ -16,14 +16,16 @@ import pandas as pd
 
 # Create your views here.
 def move(request):
-   form = MoveForm(request.POST, usuario=request.user)  # Pasar el usuario al formulario
-   if form.is_valid():
-      form.instance.usuario = request.user  # Asegura que el movimiento tiene el usuario
-      form.save()
-      return redirect('move_detail', move_id=form.instance.id)  # Redirigir al detalle del movimiento
-   else:
-      form = MoveForm(usuario=request.user)
-   return render(request, 'move.html', {'form': form})
+    if request.method == 'POST':
+        form = MoveForm(request.POST, request=request, usuario=request.user)  
+        if form.is_valid():
+            form.instance.usuario = request.user  
+            form.save()
+            return redirect('move_detail', move_id=form.instance.id)  
+    else:
+        form = MoveForm(usuario=request.user, request=request)  
+
+    return render(request, 'move.html', {'form': form})
 
 
 def moves_list(request):
@@ -64,7 +66,8 @@ class MoveEditView(UpdateView):
     
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['usuario'] = self.request.user  # Pasar el usuario autenticado al formulario
+        kwargs['usuario'] = self.request.user
+        kwargs['request'] = self.request  
         return kwargs
 
 
@@ -72,6 +75,7 @@ class MoveDeleteView(DeleteView):
     model = Move
     template_name = 'move_confirm_delete.html'
     success_url = reverse_lazy('moves_list') 
+
 
 
 class MoveDetailView(DetailView):
@@ -85,8 +89,12 @@ class MoveDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         move = self.get_object()
-        saldo = get_bank_balance(move.bank)  
+
+        saldo = get_bank_balance(self.request, move.bank)
         context['saldo'] = saldo
+
+        context['form'] = MoveForm(request=self.request, usuario=self.request.user)  
+        
         return context
 
 
