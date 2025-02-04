@@ -92,29 +92,39 @@ WSGI_APPLICATION = 'iffp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': 'iffp_data',
-        # 'USER': 'postgres',
-        # 'PASSWORD': 'postgres1*',
-        # 'HOST': 'localhost',
-        # 'DATABASE_PORT': '5432',
+ENV_MODE = os.getenv("DJANGO_ENV", "development") 
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'iffp_data_9jda',
-        'USER': 'iffp_data_9jda_user',
-        'PASSWORD': 'Hq2WEbmn96Wht1A0U23GwLSEECl0OQkA',
-        'HOST': 'dpg-cuf22qtumphs73apto8g-a.oregon-postgres.render.com',
-        'DATABASE_PORT': '5432',
+if ENV_MODE == "production":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'iffp_data_9jda',
+            'USER': 'iffp_data_9jda_user',
+            'PASSWORD': 'Hq2WEbmn96Wht1A0U23GwLSEECl0OQkA',
+            'HOST': 'dpg-cuf22qtumphs73apto8g-a.oregon-postgres.render.com',
+            'DATABASE_PORT': '5432',
 
         'OPTIONS': {
             'client_encoding': 'UTF8',  # Asegúrate de usar UTF-8
         }        
     }
 }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'iffp_data',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres1*',
+            'HOST': 'localhost',
+            'DATABASE_PORT': '5432',
+
+        'OPTIONS': {
+            'client_encoding': 'UTF8',  # Asegúrate de usar UTF-8
+        }        
+    }
+}
+
 
 
 # Password validation
@@ -151,7 +161,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 if not DEBUG:
     STATIT_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATITFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
