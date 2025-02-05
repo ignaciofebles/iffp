@@ -53,3 +53,6 @@ class ThingDeleteView(DeleteView):
 
     from django.db.models import Q
 
+
+def ver_pdf(request):
+    return render(request, 'ver_pdf.html')
