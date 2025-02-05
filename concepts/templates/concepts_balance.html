@@ -42,7 +42,7 @@
                     <th class="text-end col-amount">Saldo</th>
                     <th class="text-end col-amount" >Media</th>
                     <th class="text-end col-amount" >#Meses</th>
-                    <th class="text-center">Transacciones</th>
+                    <th class="text-center">Trans.</th>
                  </tr>
                 </tr>
             </thead>
@@ -59,7 +59,9 @@
                     <td class="text-end">{{ concept.num_meses }}</td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center flex-wrap gap-2">
-                            <a href="{% url 'concept_transactions' concept.id %}" class="btn btn-info btn-sm">Transacciones</a>
+                            <a href="{% url 'concept_transactions' concept.id %}" class="btn btn-info btn-sm">
+                                <i class="bi bi-cash"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>

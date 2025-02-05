@@ -201,3 +201,7 @@ python manage.py showmigrations
 python manage.py migrate moves 0002
 
 https://chatgpt.com/share/67851548-58a4-8001-aa49-a45aa1a20a0d-----
+
+
+Caso práctico curso Analista de Datos Google
+https://iffp.onrender.com/thing/pdf/

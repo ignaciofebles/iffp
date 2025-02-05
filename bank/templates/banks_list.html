@@ -22,8 +22,12 @@
                     <td class="text-center">
                         <!-- Contenedor flexbox para alinear botones -->
                         <div class="d-flex justify-content-center flex-wrap gap-2">
-                            <a href="{% url 'Bank' bank.id %}" class="btn btn-primary btn-sm">Editar</a>
-                            <a href="{% url 'bank_delete' bank.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{% url 'Bank' bank.id %}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'bank_delete' bank.id %}" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -43,3 +47,4 @@
     </div>
 </div>
 {% endblock %}
+
