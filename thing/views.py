@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from thing.models import Thing
 from .forms import ThingForm
 from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic import DetailView
 from django.urls import reverse_lazy
 from django.db.models import Q
 
@@ -49,9 +50,13 @@ class ThingDeleteView(DeleteView):
     model = Thing
     template_name = 'thing_confirm_delete.html'
     success_url = reverse_lazy('things_list') 
+    
 
 
-    from django.db.models import Q
+class ThingDetailView(DetailView):
+    model = Thing
+    template_name = 'thing_detail.html'  # Asegúrate de cambiar esto por el nombre de tu archivo
+    success_url = reverse_lazy('things_list') 
 
 
 def ver_pdf(request):
