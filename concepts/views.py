@@ -4,19 +4,19 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from concept.models import Concept
 from move.models import Move
+from django.core.paginator import Paginator
 
 # Create your views here.
 def concepts_balance(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
-    # Filtrar las transacciones
     moves = Move.objects.filter(usuario=request.user).order_by('-date')
 
     if start_date:
-        moves = moves.filter(date__gte=start_date)  # Filtrar desde la fecha inicial
+        moves = moves.filter(date__gte=start_date) 
     if end_date:
-        moves = moves.filter(date__lte=end_date)  # Filtrar hasta la fecha final
+        moves = moves.filter(date__lte=end_date)  
 
     concepts = Concept.objects.filter(usuario=request.user).order_by('description')    
     total_ingresos = 0
@@ -41,7 +41,6 @@ def concepts_balance(request):
         if not end_date:
             end_date = last_transaction
 
-       # Convertir a objetos datetime si son cadenas
         if isinstance(start_date, str):
             start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
         if isinstance(end_date, str):
@@ -65,39 +64,58 @@ def concepts_balance(request):
 def concept_transactions(request, pk):
     concept = get_object_or_404(Concept, id=pk)
 
-    # Obtener las transacciones ordenadas por fecha de forma ascendente
-    moves = Move.objects.filter(concept=concept).select_related('bank').order_by('-date')
-    running_total = 0
-    current_month = moves.first().date.month if moves.exists() else None
-    print('primer mes: ', current_month)
-    moves_with_sums = []
+    start_date = request.GET.get('start_date', '')
+    end_date = request.GET.get('end_date', '')
+    results_per_page = request.GET.get('results_per_page', '50')  
+    page_number = request.GET.get('page', 1)  
 
-    # Procesar cada movimiento
+    moves = Move.objects.filter(usuario=request.user, concept=concept).select_related('bank').order_by('-date')
+
+    if start_date:
+        moves = moves.filter(date__gte=start_date)
+    if end_date:
+        moves = moves.filter(date__lte=end_date)
+
+    try:
+        results_per_page = int(results_per_page)
+        if results_per_page not in [50, 100, 200]:
+            results_per_page = 50
+    except ValueError:
+        results_per_page = 50
+
+
+    moves_with_sums = []
+    current_month = None
+    running_total = 0
+
     for move in moves:
-        # Detectar el cambio de mes (antes de sumar el monto)
         if move.date.month != current_month:
-            # Si el mes cambia, reiniciar el total acumulado
             current_month = move.date.month                   
-            running_total = 0  # Reiniciar el acumulado
+            running_total = 0 
             running_total += move.amount
             
-            # Añadir la fila de cambio de mes con un indicador
             moves_with_sums.append({
-                'is_new_month': True,  # Indicador de cambio de mes
+                'is_new_month': True,  
                 'move': move,
-                'running_total': running_total  # Reiniciado a cero
+                'running_total': running_total
             })
         else:
             running_total += move.amount                             
             moves_with_sums.append({
-                'is_new_month': False,  # No es un nuevo mes
+                'is_new_month': False,  
                 'move': move,
-                'running_total': running_total  # Mantener el valor acumulado
+                'running_total': running_total 
             })
            
-       
-    return render(request, 'concept_transactions.html', {
+    paginator = Paginator(moves_with_sums, results_per_page)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
         'concept': concept,
-        'moves_with_sums': moves_with_sums  # Pasar la lista con los cálculos
-    })
+        'moves_with_sums': page_obj,  
+        'start_date': start_date,
+        'end_date': end_date,
+        'results_per_page': results_per_page
+    }
+    return render(request, 'concept_transactions.html', context)
 
