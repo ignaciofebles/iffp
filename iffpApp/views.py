@@ -6,4 +6,4 @@ def home(request):
 
 
 def politica_cookies(request):
-    return render(request, "politica_cookies.html")
+    return render(request, "iffpApp/politica_cookies.html")

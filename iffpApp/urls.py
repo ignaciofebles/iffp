@@ -6,7 +6,7 @@ from .views import politica_cookies
 
 urlpatterns = [
     path('', views.home, name="Home"),    
-    path("politica-de-cookies/", politica_cookies, name="politica_cookies"),
+    path('politica-de-cookies/', politica_cookies, name="politica_cookies"),
 ]
 
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
