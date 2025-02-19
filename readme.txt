@@ -208,3 +208,6 @@ https://iffp.onrender.com/thing/pdf/
 
 Kaggle
 https://www.kaggle.com/code/ignaciofebles/casopractico
+
+Obtener requirements.txt antes de subir a producción
+pip freeze > requirements.txt

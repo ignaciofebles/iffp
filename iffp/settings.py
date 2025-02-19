@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'concepts',
     'crispy_forms',
     'crispy_bootstrap4',
-    'django.contrib.humanize',
+    'django.contrib.humanize',    
 ]
 
 MIDDLEWARE = [
@@ -63,7 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'iffp.middleware.LoginRequiredMiddleware',
+    'iffp.middleware.LoginRequiredMiddleware',    
 ]
 
 ROOT_URLCONF = 'iffp.urls'
@@ -184,6 +184,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# Configuración de Cookies Seguras en Django
+SESSION_COOKIE_AGE = 1209600  # 2 semanas
+SESSION_COOKIE_SECURE = True  # Solo se envían en HTTPS
+SESSION_COOKIE_HTTPONLY = True  # No accesibles por JavaScript
+SESSION_COOKIE_SAMESITE = 'Lax'  # Protección CSRF
 
 
 
