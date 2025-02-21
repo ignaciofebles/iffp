@@ -1,38 +1,49 @@
 {% extends "iffpApp/base.html" %}
-
 {% load static %}
 
 {% block content %}
-
 <div class="container">
     <div class="text-center mt-4">
         <a class="text-decoration-none me-2" href="{% url 'Home' %}">Home</a>
-        <a class="text-decoration-none" href="{% url 'Move' %}">Nueva transacción</a>
-        <a class="text-decoration-none" href="{% url 'banks_balance' %}">Bancos</a>
-        <a class="text-decoration-none" href="{% url 'concepts_balance' %}">Conceptos</a>
+        <a class="text-decoration-none" href="{% url 'Thing' %}">Nueva</a>
     </div>
     
-    <h3 class="text-center mb-4 text-decoration">Lista de notas</h3>
+    <h3 class="text-center mb-4">Lista de notas</h3>
 
-    <!-- Formulario de búsqueda -->
-    <form method="get" class="mb-4">
-        <div class="row">
-            <div class="col-md-10 mb-2">
-                <input type="text" name="search" class="form-control" placeholder="Buscar por código o descripción" value="{{ request.GET.search }}">
+    <!-- Formulario de búsqueda y filtros centrado -->
+    <div class="d-flex justify-content-center">
+        <form method="get" class="mb-4 w-100" style="max-width: 600px;">
+            <div class="row g-2 align-items-end">
+                <!-- Campo de búsqueda -->
+                <div class="col-md-6">
+                    <label for="search" class="form-label">Buscar</label>
+                    <input type="text" id="search" name="search" class="form-control form-control-sm" placeholder="Código o descripción" value="{{ request.GET.search }}">
+                </div>
+                <!-- Selección de registros por página -->
+                <div class="col-md-3">
+                    <label for="results_per_page" class="form-label">Res./pág.</label>
+                    <select id="results_per_page" name="results_per_page" class="form-select form-select-sm">
+                        <option value="50" {% if request.GET.results_per_page == '50' %}selected{% endif %}>50</option>
+                        <option value="100" {% if request.GET.results_per_page == '100' %}selected{% endif %}>100</option>
+                        <option value="200" {% if request.GET.results_per_page == '200' %}selected{% endif %}>200</option>
+                    </select>
+                </div>
+                <!-- Botones -->
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Filtrar</button>
+                    <a href="{% url 'things_list' %}" class="btn btn-secondary btn-sm w-100">Limpiar</a>
+                </div>
             </div>
-            <div class="col-md-2 mb-2">
-                <button type="submit" class="btn btn-primary w-100">Buscar</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 
     <!-- Tabla responsiva -->
     <div class="table-responsive">
-        <table class="table table-striped table-bordered table-sm">            
+        <table class="table table-striped table-bordered table-sm align-middle">
             <thead class="table-dark">
                 <tr>
                     <th>Código</th>
-                    <th>Descripción</th>  
+                    <th>Descripción</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
@@ -42,7 +53,7 @@
                     <td>{{ thing.code|slice:":30" }}{% if thing.code|length > 30 %}...{% endif %}</td>
                     <td>{{ thing.description|slice:":30" }}{% if thing.description|length > 30 %}...{% endif %}</td>
                     <td class="text-center">
-                        <div class="d-flex justify-content-center flex-wrap gap-3">
+                        <div class="d-flex justify-content-center flex-wrap gap-2">
                             <a href="{% url 'thing_detail' thing.id %}" class="btn btn-info btn-sm">
                                 <i class="bi bi-eye"></i>
                             </a>
@@ -52,23 +63,57 @@
                             <a href="{% url 'thing_delete' thing.id %}" class="btn btn-danger btn-sm">
                                 <i class="bi bi-trash"></i>
                             </a>
-                            
                         </div>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center">No hay notas registradas</td>
+                    <td colspan="3" class="text-center">No hay notas registradas</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <div class="text-center mt-4">
-        <a class="btn btn-secondary me-2" href="{% url 'Home' %}">Home</a>
+    <!-- Paginación -->
+    {% if things.has_other_pages %}
+        <div class="d-flex justify-content-center">
+            <ul class="pagination">
+                {% if things.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?search={{ request.GET.search }}&results_per_page={{ request.GET.results_per_page }}&page=1">Inicio</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?search={{ request.GET.search }}&results_per_page={{ request.GET.results_per_page }}&page={{ things.previous_page_number }}">Anterior</a>
+                </li>
+                {% endif %}
+
+                {% for num in things.paginator.page_range %}
+                {% if things.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > things.number|add:'-3' and num < things.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?search={{ request.GET.search }}&results_per_page={{ request.GET.results_per_page }}&page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+
+                {% if things.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?search={{ request.GET.search }}&results_per_page={{ request.GET.results_per_page }}&page={{ things.next_page_number }}">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?search={{ request.GET.search }}&results_per_page={{ request.GET.results_per_page }}&page={{ things.paginator.num_pages }}">Final</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <!-- Botones Home y Nuevo -->
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+        <a class="btn btn-secondary" href="{% url 'Home' %}">Home</a>
         <a class="btn btn-success" href="{% url 'Thing' %}">Nuevo</a>
     </div>
 </div>
-
 {% endblock %}

@@ -59,7 +59,7 @@ class MoveEditView(UpdateView):
     model = Move
     form_class = MoveForm
     template_name = 'move.html'
-    success_url = reverse_lazy('moves_list')
+    success_url = reverse_lazy('Home')
     
     def get_object(self, queryset=None):
         return Move.objects.get(id=self.kwargs['pk'])

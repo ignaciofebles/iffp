@@ -106,7 +106,7 @@ if ENV_MODE == "production":
             'DATABASE_PORT': '5432',
 
         'OPTIONS': {
-            'client_encoding': 'UTF8',  # Asegúrate de usar UTF-8
+            'client_encoding': 'UTF8',
         }        
     }
 }
@@ -118,10 +118,10 @@ else:
             'USER': 'postgres',
             'PASSWORD': 'postgres1*',
             'HOST': 'localhost',
-            'DATABASE_PORT': '5432',
+            'PORT': '5432',
 
         'OPTIONS': {
-            'client_encoding': 'UTF8',  # Asegúrate de usar UTF-8
+            'client_encoding': 'UTF8',
         }        
     }
 }
