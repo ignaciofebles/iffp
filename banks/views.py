@@ -27,7 +27,7 @@ def bank_transactions(request, pk):
     page_number = request.GET.get('page', 1)  # Página actual
 
     # Filtrar las transacciones
-    moves = Move.objects.filter(usuario=request.user, bank=bank).select_related('concept').order_by('-date')
+    moves = Move.objects.filter(usuario=request.user, bank=bank).select_related('concept').order_by('-date', '-id')
 
     if start_date:
         moves = moves.filter(date__gte=start_date)  # Filtrar desde la fecha inicial

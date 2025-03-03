@@ -35,7 +35,7 @@ def moves_list(request):
     results_per_page = request.GET.get('results_per_page', '50')  # Valor por defecto 50
 
     # Filtrar las transacciones
-    moves = Move.objects.filter(usuario=request.user).order_by('-date')
+    moves = Move.objects.filter(usuario=request.user).order_by('-date','-id')
 
     if start_date:
         moves = moves.filter(date__gte=start_date)  # Filtrar desde la fecha inicial

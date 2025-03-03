@@ -11,7 +11,7 @@ def concepts_balance(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
-    moves = Move.objects.filter(usuario=request.user).order_by('-date')
+    moves = Move.objects.filter(usuario=request.user).order_by('-date', '-id')
 
     if start_date:
         moves = moves.filter(date__gte=start_date) 
@@ -69,7 +69,7 @@ def concept_transactions(request, pk):
     results_per_page = request.GET.get('results_per_page', '50')  
     page_number = request.GET.get('page', 1)  
 
-    moves = Move.objects.filter(usuario=request.user, concept=concept).select_related('bank').order_by('-date')
+    moves = Move.objects.filter(usuario=request.user, concept=concept).select_related('bank').order_by('-date', '-id')
 
     if start_date:
         moves = moves.filter(date__gte=start_date)
